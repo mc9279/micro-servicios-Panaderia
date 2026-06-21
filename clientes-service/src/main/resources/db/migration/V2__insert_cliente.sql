@@ -1,0 +1,4 @@
+INSERT INTO cliente(nombre, apellido, rut, email, telefono, direccion) VALUES
+                                                                           ('Gabriel','Soto','18.456.123-2','gabriel.soto@gmail.com','987654321','Av. Libertador 123, Santiago'),
+                                                                           ('Camila','Muñoz','19.321.456-8','camila.munoz@gmail.com','976543210','Los Pinos 456, Maipu'),
+                                                                           ('Javier','Rojas','17.654.987-1','javier.rojas@gmail.com','965432109','Pasaje Central 789, Puente Alto');

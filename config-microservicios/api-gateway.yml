@@ -1,0 +1,88 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: clientes-service
+              uri: lb://CLIENTES-SERVICE
+              predicates:
+                - Path=/api/v1/clientes/**, /v3/api-docs/clientes
+              filters:
+                - RewritePath=/v3/api-docs/clientes, /v3/api-docs
+
+            - id: productos-service
+              uri: lb://PRODUCTOS-SERVICE
+              predicates:
+                - Path=/api/v1/productos/**, /v3/api-docs/productos
+              filters:
+                - RewritePath=/v3/api-docs/productos, /v3/api-docs
+
+            - id: inventario-service
+              uri: lb://inventario-service
+              predicates:
+                - Path=/inventario/**, /v3/api-docs/inventario
+              filters:
+                - RewritePath=/v3/api-docs/inventario, /v3/api-docs
+
+            - id: delivery-service
+              uri: lb://DELIVERY-SERVICE
+              predicates:
+                - Path=/api/v1/delivery/**, /v3/api-docs/delivery
+              filters:
+                - RewritePath=/v3/api-docs/delivery, /v3/api-docs
+
+            - id: panadero-service
+              uri: lb://PANADERO-SERVICE
+              predicates:
+                - Path=/api/v1/panadero/**, /v3/api-docs/panadero
+              filters:
+                - RewritePath=/v3/api-docs/panadero, /v3/api-docs
+
+            - id: proveedores-service
+              uri: lb://PROVEEDORES-SERVICE
+              predicates:
+                - Path=/api/v1/proveedores/**, /v3/api-docs/proveedores
+              filters:
+                - RewritePath=/v3/api-docs/proveedores, /v3/api-docs
+
+            - id: ventas-service
+              uri: lb://VENTAS-SERVICE
+              predicates:
+                - Path=/api/v1/ventas/**, /v3/api-docs/ventas
+              filters:
+                - RewritePath=/v3/api-docs/ventas, /v3/api-docs
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: Clientes
+        url: /v3/api-docs/clientes
+
+      - name: Productos
+        url: /v3/api-docs/productos
+
+      - name: Inventario
+        url: /v3/api-docs/inventario
+
+      - name: Delivery
+        url: /v3/api-docs/delivery
+
+      - name: Panadero
+        url: /v3/api-docs/panadero
+
+      - name: Proveedores
+        url: /v3/api-docs/proveedores
+
+      - name: Ventas
+        url: /v3/api-docs/ventas
+
