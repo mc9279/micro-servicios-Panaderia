@@ -3,6 +3,7 @@ package cl.duoc.delivery_service.controller;
 import cl.duoc.delivery_service.dto.DeliveryDTO;
 import cl.duoc.delivery_service.service.DeliveryService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -51,6 +52,7 @@ public class DeliveryController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<DeliveryDTO> buscarporId(
+            @Parameter(description = "ID del panadero a actualizar", example = "1")
             @PathVariable Long id){
         DeliveryDTO delivery = deliveryService.findById(id);
         if(delivery==null){return ResponseEntity.notFound().build();
@@ -83,6 +85,7 @@ public class DeliveryController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<DeliveryDTO>actualizado(
+            @Parameter(description = "ID del panadero a actualizar", example = "1")
             @PathVariable Long id,
             @RequestBody DeliveryDTO dto){
         DeliveryDTO actualizado = deliveryService.update(id,dto);
@@ -102,6 +105,7 @@ public class DeliveryController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<Void> eliminar(
+            @Parameter(description = "ID del panadero a actualizar", example = "1")
             @PathVariable Long id){
         deliveryService.delete(id);
         return ResponseEntity.noContent().build();

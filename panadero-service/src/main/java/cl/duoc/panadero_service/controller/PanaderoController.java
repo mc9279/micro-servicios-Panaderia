@@ -4,6 +4,7 @@ import cl.duoc.panadero_service.dto.PanaderoDTO;
 import cl.duoc.panadero_service.modelo.Panadero;
 import cl.duoc.panadero_service.service.PanaderoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -53,7 +54,9 @@ public class PanaderoController {
             @ApiResponse(responseCode = "404", description = "Panadero no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    public ResponseEntity<?> buscarPorId(@PathVariable Long id){
+    public ResponseEntity<?> buscarPorId(
+            @Parameter(description = "ID del panadero", example = "1")
+            @PathVariable Long id){
         PanaderoDTO inventario = panaderoService.findById(id);
 
         if(inventario == null)
@@ -95,6 +98,7 @@ public class PanaderoController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<?> actualizar(
+            @Parameter(description = "ID del panadero a actualizar", example = "1")
             @PathVariable Long id,
             @Valid @RequestBody Panadero panadero){
 
@@ -108,7 +112,9 @@ public class PanaderoController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(
+    @Operation
+            (
+
             summary = "Eliminar panadero",
             description = "Elimina un panadero registrado en el sistema utilizando su identificador."
     )
@@ -117,7 +123,9 @@ public class PanaderoController {
             @ApiResponse(responseCode = "404", description = "Panadero no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    public ResponseEntity<?> borrar(@PathVariable Long id){
+    public ResponseEntity<?> borrar(
+            @Parameter(description = "ID del panadero a eliminar", example = "1")
+            @PathVariable Long id){
         panaderoService.delete(id);
         return ResponseEntity.noContent().build();
     }

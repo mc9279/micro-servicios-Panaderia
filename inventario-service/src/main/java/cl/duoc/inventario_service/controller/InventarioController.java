@@ -4,6 +4,7 @@ import cl.duoc.inventario_service.dto.InventarioDTO;
 import cl.duoc.inventario_service.modelo.Inventario;
 import cl.duoc.inventario_service.service.InventarioService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -52,6 +53,7 @@ public class InventarioController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<InventarioDTO> buscarporId(
+            @Parameter(description = "ID del panadero a actualizar", example = "1")
             @PathVariable Long id){
         InventarioDTO inventario = inventarioService.findById(id);
         if(inventario==null){
@@ -86,6 +88,7 @@ public class InventarioController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<InventarioDTO>actualizado(
+            @Parameter(description = "ID del panadero a actualizar", example = "1")
             @PathVariable Long id,
             @RequestBody InventarioDTO dto){
         InventarioDTO actualizado = inventarioService.update(id,dto);
@@ -105,6 +108,7 @@ public class InventarioController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<Void> eliminar(
+            @Parameter(description = "ID del panadero a actualizar", example = "1")
             @PathVariable Long id){
         inventarioService.delete(id);
         return ResponseEntity.noContent().build();

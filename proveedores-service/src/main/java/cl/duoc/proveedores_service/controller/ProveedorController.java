@@ -4,6 +4,7 @@ import cl.duoc.proveedores_service.dto.ProveedoresDTO;
 import cl.duoc.proveedores_service.modelo.Proveedores;
 import cl.duoc.proveedores_service.service.ProveedoresService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -54,7 +55,9 @@ public class ProveedorController {
             @ApiResponse(responseCode = "404", description = "Proveedor no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    public ResponseEntity<?> buscarPorId(@PathVariable Long id){
+    public ResponseEntity<?> buscarPorId(
+            @Parameter(description = "ID del proveedor", example = "1")
+            @PathVariable Long id){
         ProveedoresDTO productos = proveedoresService.findById(id);
 
         if(productos == null)
@@ -97,6 +100,7 @@ public class ProveedorController {
     })
     public ResponseEntity<?> actualizar(
             @PathVariable Long id,
+            @Parameter(description = "ID del proveedor", example = "1")
             @Valid @RequestBody Proveedores proveedores){
 
         Proveedores proveedoresActulizado =
@@ -118,7 +122,8 @@ public class ProveedorController {
             @ApiResponse(responseCode = "404", description = "Proveedor no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    public ResponseEntity<?> borrar(@PathVariable Long id){
+    public ResponseEntity<?> borrar(@Parameter(description = "ID del proveedor a eliminar", example = "1") @PathVariable Long id
+    ){
         proveedoresService.delete(id);
         return ResponseEntity.noContent().build();
     }

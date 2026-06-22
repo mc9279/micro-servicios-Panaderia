@@ -4,6 +4,7 @@ import cl.duoc.productos_service.dto.ProductosDTO;
 import cl.duoc.productos_service.modelo.Productos;
 import cl.duoc.productos_service.service.ProductosService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -51,7 +52,9 @@ public class ProductoController {
             @ApiResponse(responseCode = "404", description = "Producto no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    public ResponseEntity<?> buscarPorId(@PathVariable Long id){
+    public ResponseEntity<?> buscarPorId(
+            @Parameter(description = "ID del producto", example = "1")
+            @PathVariable Long id){
         ProductosDTO productos = productosService.findById(id);
 
         if(productos == null)
@@ -93,6 +96,7 @@ public class ProductoController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<?> actualizar(
+            @Parameter(description = "ID del producto a actualizar", example = "1")
             @PathVariable Long id,
             @Valid @RequestBody Productos productos){
 
@@ -115,7 +119,9 @@ public class ProductoController {
             @ApiResponse(responseCode = "404", description = "Producto no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    public ResponseEntity<?> borrar(@PathVariable Long id){
+    public ResponseEntity<?> borrar(
+            @Parameter(description = "ID del producto a eliminar", example = "1")
+            @PathVariable Long id){
         productosService.delete(id);
         return ResponseEntity.noContent().build();
     }

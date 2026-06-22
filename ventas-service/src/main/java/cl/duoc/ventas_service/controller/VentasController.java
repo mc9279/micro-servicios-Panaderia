@@ -3,6 +3,7 @@ package cl.duoc.ventas_service.controller;
 import cl.duoc.ventas_service.dto.VentasDTO;
 import cl.duoc.ventas_service.service.VentasService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -54,6 +55,7 @@ public class VentasController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<VentasDTO> buscarporId(
+            @Parameter(description = "ID de la venta", example = "1")
             @PathVariable Long id){
         VentasDTO ventas = ventasService.findById(id);
         if(ventas==null){return ResponseEntity.notFound().build();
@@ -90,6 +92,7 @@ public class VentasController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<VentasDTO>actualizado(
+            @Parameter(description = "ID de la venta a actualizar", example = "1")
             @PathVariable Long id,
             @RequestBody VentasDTO dto){
         VentasDTO actualizado = ventasService.update(id,dto);
@@ -109,6 +112,7 @@ public class VentasController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<Void> eliminar(
+            @Parameter(description = "ID de la venta a eliminar", example = "1")
             @PathVariable Long id){
         ventasService.delete(id);
         return ResponseEntity.noContent().build();

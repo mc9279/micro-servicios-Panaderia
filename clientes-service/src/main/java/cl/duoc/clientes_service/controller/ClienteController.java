@@ -4,6 +4,7 @@ import cl.duoc.clientes_service.dto.ClienteDTO;
 import cl.duoc.clientes_service.modelo.Cliente;
 import cl.duoc.clientes_service.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,7 +47,9 @@ public class ClienteController {
             @ApiResponse(responseCode = "404", description = "Cliente no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    public ResponseEntity<?> buscarPorId(@PathVariable Long id){
+    public ResponseEntity<?> buscarPorId(
+            @Parameter(description = "ID del cliente", example = "1")
+            @PathVariable Long id){
         ClienteDTO cliente = clienteService.findById(id);
 
         if(cliente == null)
@@ -81,6 +84,7 @@ public class ClienteController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<?> actualizar(
+            @Parameter(description = "ID del panadero a actualizar", example = "1")
             @PathVariable Long id,
             @Valid @RequestBody Cliente cliente){
 
@@ -103,7 +107,9 @@ public class ClienteController {
             @ApiResponse(responseCode = "404", description = "Cliente no encontrado"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    public ResponseEntity<?> borrar(@PathVariable Long id){
+    public ResponseEntity<?> borrar(
+            @Parameter(description = "ID del panadero a actualizar", example = "1")
+            @PathVariable Long id){
         clienteService.delete(id);
         return ResponseEntity.noContent().build();
 }
