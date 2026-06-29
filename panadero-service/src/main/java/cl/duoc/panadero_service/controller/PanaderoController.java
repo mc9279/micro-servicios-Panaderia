@@ -1,10 +1,13 @@
 package cl.duoc.panadero_service.controller;
 
 import cl.duoc.panadero_service.dto.PanaderoDTO;
+import cl.duoc.panadero_service.exception.ErrorResponse;
+import cl.duoc.panadero_service.exception.PanaderoNoEncontradoException;
 import cl.duoc.panadero_service.modelo.Panadero;
 import cl.duoc.panadero_service.service.PanaderoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -34,8 +37,14 @@ public class PanaderoController {
             description = "Obtiene el listado completo de panaderos registrados en el sistema."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Listado obtenido correctamente"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Listado obtenido correctamente",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = PanaderoDTO.class)))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<?> listar(){
         return ResponseEntity.ok(panaderoService.findDTOList());
@@ -51,8 +60,14 @@ public class PanaderoController {
                     responseCode = "200",
                     description = "Panadero encontrado correctamente",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = PanaderoDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Panadero no encontrado"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Panadero no encontrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<?> buscarPorId(
             @Parameter(description = "ID del panadero", example = "1")
@@ -75,8 +90,14 @@ public class PanaderoController {
                     responseCode = "201",
                     description = "Panadero registrado correctamente",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Panadero.class))),
-            @ApiResponse(responseCode = "400", description = "Datos inválidos"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos inválidos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<?> registrar(@Valid @RequestBody Panadero panadero){
         Panadero panaderoNuevo = panaderoService.save(panadero);
@@ -93,17 +114,25 @@ public class PanaderoController {
                     responseCode = "200",
                     description = "Panadero actualizado correctamente",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Panadero.class))),
-            @ApiResponse(responseCode = "404", description = "Panadero no encontrado"),
-            @ApiResponse(responseCode = "400", description = "Datos inválidos"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Panadero no encontrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos inválidos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<?> actualizar(
             @Parameter(description = "ID del panadero a actualizar", example = "1")
             @PathVariable Long id,
             @Valid @RequestBody Panadero panadero){
 
-        Panadero panaderoActulizado =
-                panaderoService.update(id,panadero);
+        Panadero panaderoActulizado = panaderoService.update(id,panadero);
 
         if(panaderoActulizado == null)
             return ResponseEntity.notFound().build();
@@ -119,9 +148,25 @@ public class PanaderoController {
             description = "Elimina un panadero registrado en el sistema utilizando su identificador."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Panadero eliminado correctamente"),
-            @ApiResponse(responseCode = "404", description = "Panadero no encontrado"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Panadero eliminado correctamente"
+            ),
+
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Panadero no encontrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos inválidos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<?> borrar(
             @Parameter(description = "ID del panadero a eliminar", example = "1")

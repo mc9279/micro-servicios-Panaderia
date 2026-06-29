@@ -1,9 +1,13 @@
 package cl.duoc.delivery_service.controller;
 
 import cl.duoc.delivery_service.dto.DeliveryDTO;
+import cl.duoc.delivery_service.exception.ErrorResponse;
 import cl.duoc.delivery_service.service.DeliveryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,8 +36,14 @@ public class DeliveryController {
             description = "Obtiene el listado completo de entregas registradas en el sistema."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Entregas obtenidas correctamente"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Entregas obtenidas correctamente",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = DeliveryDTO.class)))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<List<DeliveryDTO>> listar() {
 
@@ -47,9 +57,18 @@ public class DeliveryController {
             description = "Obtiene la información de una entrega específica utilizando su identificador."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Entrega encontrada correctamente"),
-            @ApiResponse(responseCode = "404", description = "Entrega no encontrada"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Entrega encontrada correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = DeliveryDTO.class))),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Entrega no encontrada",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<DeliveryDTO> buscarporId(
             @Parameter(description = "ID del panadero a actualizar", example = "1")
@@ -65,9 +84,22 @@ public class DeliveryController {
             description = "Permite registrar una nueva entrega asociada a una venta."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Entrega registrada correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos inválidos"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Entrega registrada correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = DeliveryDTO.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos inválidos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class)
+                    )
+            )
     })
     public ResponseEntity<DeliveryDTO> crear(
             @Valid @RequestBody DeliveryDTO dto){
@@ -80,9 +112,17 @@ public class DeliveryController {
             description = "Actualiza los datos de una entrega existente mediante su identificador."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Entrega actualizada correctamente"),
-            @ApiResponse(responseCode = "404", description = "Entrega no encontrada"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Entrega actualizada correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = DeliveryDTO.class))),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Entrega no encontrada",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<DeliveryDTO>actualizado(
             @Parameter(description = "ID del panadero a actualizar", example = "1")
@@ -100,9 +140,17 @@ public class DeliveryController {
             description = "Elimina una entrega registrada en el sistema utilizando su identificador."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Entrega eliminada correctamente"),
-            @ApiResponse(responseCode = "404", description = "Entrega no encontrada"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Entrega eliminada correctamente"),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Entrega no encontrada",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<Void> eliminar(
             @Parameter(description = "ID del panadero a actualizar", example = "1")

@@ -42,7 +42,7 @@ public class VentasService {
 
     public void delete(Long id){
 
-        if(!ventasRepository.existsById(id)){throw new VentasNoencontradaException("No existe un inventario con id: " + id);
+        if(!ventasRepository.existsById(id)){throw new VentasNoencontradaException("No existe un venta con id: " + id);
         }
 
         ventasRepository.deleteById(id);

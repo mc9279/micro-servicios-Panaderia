@@ -1,6 +1,7 @@
 package cl.duoc.proveedores_service.controller;
 
 import cl.duoc.proveedores_service.dto.ProveedoresDTO;
+import cl.duoc.proveedores_service.exception.ErrorResponse;
 import cl.duoc.proveedores_service.modelo.Proveedores;
 import cl.duoc.proveedores_service.service.ProveedoresService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,8 +33,14 @@ public class ProveedorController {
             description = "Obtiene el listado completo de proveedores registrados en el sistema."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Listado obtenido correctamente"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Listado obtenido correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProveedoresDTO.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<?> listar(){
         return ResponseEntity.ok(proveedoresService.findDTOList());
@@ -48,12 +55,17 @@ public class ProveedorController {
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Proveedor encontrado correctamente", content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ProveedoresDTO.class)
-                    )
+                    description = "Proveedor encontrado correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProveedoresDTO.class))
             ),
-            @ApiResponse(responseCode = "404", description = "Proveedor no encontrado"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Proveedor no encontrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<?> buscarPorId(
             @Parameter(description = "ID del proveedor", example = "1")
@@ -76,8 +88,14 @@ public class ProveedorController {
                     responseCode = "201",
                     description = "Proveedor registrado correctamente",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Proveedores.class))),
-            @ApiResponse(responseCode = "400", description = "Datos inválidos"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos inválidos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<?> registrar(@Valid @RequestBody Proveedores proveedores){
         Proveedores proveedoresNuevo = proveedoresService.save(proveedores);
@@ -94,9 +112,19 @@ public class ProveedorController {
                     responseCode = "200",
                     description = "Proveedor actualizado correctamente",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Proveedores.class))),
-            @ApiResponse(responseCode = "404", description = "Proveedor no encontrado"),
-            @ApiResponse(responseCode = "400", description = "Datos inválidos"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos inválidos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Proveedor no encontrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<?> actualizar(
             @PathVariable Long id,
@@ -118,9 +146,17 @@ public class ProveedorController {
             description = "Elimina un proveedor registrado en el sistema utilizando su identificador."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Proveedor eliminado correctamente"),
-            @ApiResponse(responseCode = "404", description = "Proveedor no encontrado"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Proveedor eliminado correctamente"),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Proveedor no encontrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<?> borrar(@Parameter(description = "ID del proveedor a eliminar", example = "1") @PathVariable Long id
     ){

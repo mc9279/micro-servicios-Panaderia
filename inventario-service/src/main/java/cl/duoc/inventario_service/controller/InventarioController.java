@@ -1,10 +1,14 @@
 package cl.duoc.inventario_service.controller;
 
 import cl.duoc.inventario_service.dto.InventarioDTO;
+import cl.duoc.inventario_service.exception.ErrorResponse;
 import cl.duoc.inventario_service.modelo.Inventario;
 import cl.duoc.inventario_service.service.InventarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,8 +36,14 @@ public class InventarioController {
             description = "Obtiene el listado completo de registros de inventario."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Inventario obtenido correctamente"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Listado obtenido correctamente",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = InventarioDTO.class)))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<List<InventarioDTO>> listar() {
 
@@ -48,9 +58,18 @@ public class InventarioController {
             description = "Obtiene la información de un registro de inventario utilizando su identificador."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Inventario encontrado correctamente"),
-            @ApiResponse(responseCode = "404", description = "Inventario no encontrado"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Inventario encontrado correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = InventarioDTO.class))),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Inventario no encontrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<InventarioDTO> buscarporId(
             @Parameter(description = "ID del panadero a actualizar", example = "1")
@@ -67,9 +86,18 @@ public class InventarioController {
             description = "Permite registrar un nuevo elemento en el inventario."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Inventario registrado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos inválidos"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Inventario registrado correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = InventarioDTO.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos inválidos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<InventarioDTO> crear(
             @Valid @RequestBody InventarioDTO dto){
@@ -83,9 +111,22 @@ public class InventarioController {
             description = "Actualiza la información de un registro de inventario existente."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Inventario actualizado correctamente"),
-            @ApiResponse(responseCode = "404", description = "Inventario no encontrado"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Inventario actualizado correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = InventarioDTO.class))),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Inventario no encontrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos inválidos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<InventarioDTO>actualizado(
             @Parameter(description = "ID del panadero a actualizar", example = "1")
@@ -103,9 +144,18 @@ public class InventarioController {
             description = "Elimina un registro de inventario utilizando su identificador."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Inventario eliminado correctamente"),
-            @ApiResponse(responseCode = "404", description = "Inventario no encontrado"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Inventario eliminado correctamente"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos inválidos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<Void> eliminar(
             @Parameter(description = "ID del panadero a actualizar", example = "1")

@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PanaderoNoEncontradoException.class)
     public ResponseEntity<?> errorCliente(
             PanaderoNoEncontradoException ex){
-        ErrorResponse response= new ErrorResponse(404,"Cliente no encontrado",ex.getMessage(), LocalDateTime.now());
+        ErrorResponse response= new ErrorResponse(404,"Panadero no encontrado",ex.getMessage(), LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 

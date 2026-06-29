@@ -25,7 +25,7 @@ public class PanaderoService {
 
 
     public PanaderoDTO findById(Long id){
-        Panadero panadero = panaderoRepository.findById(id).orElseThrow(()-> new PanaderoNoEncontradoException("No existe un cliente con id: " + id));
+        Panadero panadero = panaderoRepository.findById(id).orElseThrow(()-> new PanaderoNoEncontradoException("No existe un panadero con id: " + id));
 
         return panaderoMapper.toDTO(panadero);
     }

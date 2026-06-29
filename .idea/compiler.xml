@@ -16,14 +16,23 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
         </processorPath>
         <module name="delivery-service" />
         <module name="ventas-service" />
-        <module name="panadero-service" />
         <module name="proveedores-service" />
         <module name="clientes-service" />
         <module name="productos-service" />
         <module name="inventario-service" />
+      </profile>
+      <profile name="Annotation profile for panadero-service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
+        </processorPath>
+        <module name="panadero-service" />
       </profile>
     </annotationProcessing>
   </component>

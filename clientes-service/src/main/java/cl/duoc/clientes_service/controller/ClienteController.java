@@ -1,10 +1,14 @@
 package cl.duoc.clientes_service.controller;
 
 import cl.duoc.clientes_service.dto.ClienteDTO;
+import cl.duoc.clientes_service.exception.ErrorResponse;
 import cl.duoc.clientes_service.modelo.Cliente;
 import cl.duoc.clientes_service.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,8 +34,14 @@ public class ClienteController {
             description = "Obtiene el listado completo de clientes registrados en el sistema."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Clientes obtenidos correctamente"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Clientes obtenidos correctamente",
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ClienteDTO.class)))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<?> listar(){
         return ResponseEntity.ok(clienteService.findDTOList());
@@ -43,9 +53,18 @@ public class ClienteController {
             description = "Obtiene la información de un cliente específico utilizando su identificador."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Cliente encontrado correctamente"),
-            @ApiResponse(responseCode = "404", description = "Cliente no encontrado"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Cliente encontrado correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ClienteDTO.class))),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Cliente no encontrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<?> buscarPorId(
             @Parameter(description = "ID del cliente", example = "1")
@@ -64,9 +83,18 @@ public class ClienteController {
             description = "Permite registrar un nuevo cliente en la base de datos."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Cliente registrado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Datos inválidos"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Cliente registrado correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Cliente.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos inválidos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<?> registrar(@Valid @RequestBody Cliente cliente){
         Cliente clienteNuevo = clienteService.save(cliente);
@@ -79,12 +107,21 @@ public class ClienteController {
             description = "Actualiza los datos de un cliente existente mediante su identificador."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Cliente actualizado correctamente"),
-            @ApiResponse(responseCode = "404", description = "Cliente no encontrado"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Cliente actualizado correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Cliente.class))),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Cliente no encontrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<?> actualizar(
-            @Parameter(description = "ID del panadero a actualizar", example = "1")
+            @Parameter(description = "ID del Cliente a actualizar", example = "1")
             @PathVariable Long id,
             @Valid @RequestBody Cliente cliente){
 
@@ -103,12 +140,21 @@ public class ClienteController {
             description = "Elimina un cliente registrado en el sistema utilizando su identificador."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Cliente eliminado correctamente"),
-            @ApiResponse(responseCode = "404", description = "Cliente no encontrado"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Cliente eliminado correctamente"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Cliente no encontrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<?> borrar(
-            @Parameter(description = "ID del panadero a actualizar", example = "1")
+            @Parameter(description = "ID del cliente a actualizar", example = "1")
             @PathVariable Long id){
         clienteService.delete(id);
         return ResponseEntity.noContent().build();

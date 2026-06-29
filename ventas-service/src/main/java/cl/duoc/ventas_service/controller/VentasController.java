@@ -1,6 +1,7 @@
 package cl.duoc.ventas_service.controller;
 
 import cl.duoc.ventas_service.dto.VentasDTO;
+import cl.duoc.ventas_service.exception.ErrorResponse;
 import cl.duoc.ventas_service.service.VentasService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -33,8 +34,15 @@ public class VentasController {
             description = "Obtiene el listado completo de ventas registradas en el sistema."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Listado de ventas obtenido correctamente"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Listado de ventas obtenido correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = VentasDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<List<VentasDTO>> listar() {
 
@@ -48,11 +56,18 @@ public class VentasController {
             description = "Obtiene la información de una venta específica utilizando su identificador."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200",
+            @ApiResponse(
+                    responseCode = "200",
                     description = "Venta encontrada correctamente",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = VentasDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Venta no encontrada"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Venta no encontrada",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<VentasDTO> buscarporId(
             @Parameter(description = "ID de la venta", example = "1")
@@ -68,11 +83,18 @@ public class VentasController {
             description = "Permite registrar una nueva venta asociada a un cliente y sus productos."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201",
+            @ApiResponse(
+                    responseCode = "201",
                     description = "Venta registrada correctamente",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = VentasDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Datos inválidos"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos inválidos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<VentasDTO> crear(
             @Valid @RequestBody VentasDTO dto){
@@ -85,11 +107,22 @@ public class VentasController {
             description = "Actualiza los datos de una venta existente mediante su identificador."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Venta actualizada correctamente",
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Venta actualizada correctamente",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = VentasDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Venta no encontrada"),
-            @ApiResponse(responseCode = "400", description = "Datos inválidos"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos inválidos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Venta no encontrada",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<VentasDTO>actualizado(
             @Parameter(description = "ID de la venta a actualizar", example = "1")
@@ -107,9 +140,18 @@ public class VentasController {
             description = "Elimina una venta registrada en el sistema utilizando su identificador."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Venta eliminada correctamente"),
-            @ApiResponse(responseCode = "404", description = "Venta no encontrada"),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Venta eliminada correctamente"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Venta no encontrada",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<Void> eliminar(
             @Parameter(description = "ID de la venta a eliminar", example = "1")
